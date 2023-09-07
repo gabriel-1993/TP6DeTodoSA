@@ -197,6 +197,9 @@ public class gestionProductos extends javax.swing.JInternalFrame {
         try {
             int cont = 0;
             int codigo = Integer.parseInt(jtCodigo.getText().trim());
+            //Traigo el codigo capturado en el boton buscar, para que antes de presionar 
+            //Guardar, no cambien el codigo y modifiquen otro producto...
+            Menu.codigoBuscado = codigo;
             for (Producto prod : Menu.listaProductos) {
                 if (prod.getCodigo() == codigo) {
                     jtDescripcion.setText(prod.getDescripcion());
@@ -220,10 +223,7 @@ public class gestionProductos extends javax.swing.JInternalFrame {
         } catch (NumberFormatException nfe) {
             borrarCampos();
             JOptionPane.showMessageDialog(this, "Ingrese un numero en el código, para realizar la busqueda del producto");
-
         }
-
-
     }//GEN-LAST:event_btBuscarActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
@@ -260,14 +260,15 @@ public class gestionProductos extends javax.swing.JInternalFrame {
 
         }
         borrarCampos();
-
-
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         try {
             boolean datosOk = true;
             int codigo = Integer.parseInt(jtCodigo.getText().trim());
+            if (codigo!= Menu.codigoBuscado){
+                datosOk=false;
+            }
             if (jtDescripcion.getText().trim().equals("") || jtPrecio.getText().trim().equals("") || jtStock.getText().trim().equals("") || jtStock.getText().trim().equals("")) {
                 datosOk = false;
                 JOptionPane.showMessageDialog(this, "Datos vacios, ingrese todos los datos...");
@@ -280,30 +281,25 @@ public class gestionProductos extends javax.swing.JInternalFrame {
                     Double precio = Double.parseDouble(jtPrecio.getText().trim());
                     int stock = Integer.parseInt(jtStock.getText().trim());
                     String categoria = cbRubro.getSelectedItem().toString();
-                    int verificarCodigo = Integer.parseInt(jtCodigo.getText().trim());
 
-                    if (codigo == verificarCodigo) {
-                        if (categoria.equals("- Elija una opcion")) {
-                            JOptionPane.showMessageDialog(this, "Seleccione un Rubro por favor...");
-                        } else {
-                            prod.setDescripcion(descripcion);
-                            prod.setPrecio(precio);
-                            prod.setStock(stock);
-                            if (categoria.equalsIgnoreCase("PERFUMERIA")) {
-                                prod.setRubro(Categoria.PERFUMERIA);
-                            }
-                            if (categoria.equalsIgnoreCase("COMESTIBLE")) {
-                                prod.setRubro(Categoria.COMESTIBLE);
-                            }
-                            if (categoria.equalsIgnoreCase("LIMPIEZA")) {
-                                prod.setRubro(Categoria.LIMPIEZA);
-                            }
-                            JOptionPane.showMessageDialog(this, "Cambios Guardados !");
-
+                    if (categoria.equals("- Elija una opcion")) {
+                        JOptionPane.showMessageDialog(this, "Seleccione un Rubro por favor...");
+                    } else {
+                        prod.setDescripcion(descripcion);
+                        prod.setPrecio(precio);
+                        prod.setStock(stock);
+                        if (categoria.equalsIgnoreCase("PERFUMERIA")) {
+                            prod.setRubro(Categoria.PERFUMERIA);
                         }
+                        if (categoria.equalsIgnoreCase("COMESTIBLE")) {
+                            prod.setRubro(Categoria.COMESTIBLE);
+                        }
+                        if (categoria.equalsIgnoreCase("LIMPIEZA")) {
+                            prod.setRubro(Categoria.LIMPIEZA);
+                        }
+                        JOptionPane.showMessageDialog(this, "Cambios Guardados !");
                     }
-
-                } 
+                }
             }
             String categoria = cbRubro.getSelectedItem().toString();
             if (categoria.equals("- Elija una opcion")) {
@@ -315,11 +311,8 @@ public class gestionProductos extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Datos incorrectos, verifique los datos ingresados");
         } catch (NullPointerException npe) {
             JOptionPane.showMessageDialog(this, "Datos vacios, verifique los datos ingresados");
-
         }
         borrarCampos();
-
-
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed

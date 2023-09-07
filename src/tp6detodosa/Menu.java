@@ -4,6 +4,10 @@ import java.util.TreeSet;
 import javax.swing.JOptionPane;
 
 public class Menu extends javax.swing.JFrame {
+    
+    // capturar codigo al buscar un producto y no poder cambiar de codigo 
+    //antes de confirmar el cambio, y se modifique otro prod..
+    public static int codigoBuscado;
 
     public static TreeSet<Producto> listaProductos = new TreeSet<>();
 
